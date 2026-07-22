@@ -252,55 +252,6 @@
     border:1px dashed var(--line); border-radius:10px; padding:14px 18px;
   }
 
-  /* ---------- PUNISHMENTS (LiteBans) ---------- */
-  .punish-panel{
-    background: linear-gradient(135deg, #10151a, #1a2027);
-    border:1px solid var(--line);
-    border-radius:22px;
-    padding:28px;
-  }
-  .punish-toolbar{
-    display:flex; align-items:center; justify-content:space-between; gap:14px; margin-bottom:18px; flex-wrap:wrap;
-  }
-  .punish-search{
-    flex:1; min-width:200px; padding:11px 14px; border-radius:9px;
-    border:1px solid var(--line); background:#0e1216; color:var(--text);
-    font-family:'Manrope', sans-serif; font-size:13.5px;
-  }
-  .punish-search::placeholder{ color:var(--muted-2); }
-  .punish-count{ font-size:12.5px; color:var(--muted); white-space:nowrap; }
-  .punish-table{ width:100%; border-collapse:collapse; }
-  .punish-table th{
-    text-align:left; font-size:11px; letter-spacing:0.05em; text-transform:uppercase;
-    color:var(--muted); font-weight:700; padding:0 10px 10px; border-bottom:1px solid var(--line);
-  }
-  .punish-table td{
-    padding:12px 10px; font-size:13.5px; border-bottom:1px solid var(--line); vertical-align:top;
-  }
-  .punish-table tr:last-child td{ border-bottom:none; }
-  .punish-player{ font-weight:700; }
-  .punish-reason{ color:#cfd2d8; }
-  .punish-staff, .punish-date{ color:var(--muted); white-space:nowrap; }
-  .ptype{
-    display:inline-block; font-size:10.5px; font-weight:700; letter-spacing:0.04em; text-transform:uppercase;
-    padding:4px 9px; border-radius:100px; white-space:nowrap;
-  }
-  .ptype.ban{ background:rgba(255,61,100,0.15); color:var(--ruby-2); }
-  .ptype.mute{ background:rgba(242,248,255,0.12); color:var(--platinum-2); }
-  .ptype.kick{ background:rgba(233,237,242,0.12); color:var(--silver-2); }
-  .ptype.warn{ background:rgba(217,149,82,0.15); color:var(--bronze-2); }
-  .pstatus{ font-size:12px; font-weight:600; }
-  .pstatus.active{ color:var(--ruby-2); }
-  .pstatus.expired{ color:var(--muted); }
-  .punish-empty{ text-align:center; color:var(--muted); padding:24px 0; font-size:13.5px; }
-  .punish-note{
-    margin-top:18px; font-size:12.5px; color:var(--muted-2); text-align:center;
-  }
-  @media (max-width:640px){
-    .punish-staff{ display:none; }
-    .punish-table th:nth-child(4){ display:none; }
-  }
-
   /* ---------- TIERS GRID ---------- */
   .tiers-grid{
     display:grid;
@@ -664,7 +615,7 @@
     <div class="ip-box">
       <div>
         <div class="ip-label">IP сервера</div>
-        <div class="ip-value mono">play.elistar.pro</div>
+        <div class="ip-value mono">elistar.pro</div>
       </div>
       <button class="copy-btn" id="copyIpBtn" onclick="copyIP()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
@@ -765,10 +716,6 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h9l5 5v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>
         Правила
       </button>
-      <button type="button" class="tab-btn" id="tabbtn-punishments" onclick="switchTab('punishments')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l7 4v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V7l7-4z"/></svg>
-        Наказания
-      </button>
     </div>
   </div>
 </div>
@@ -829,39 +776,6 @@
     <div class="rules-note reveal">Все правила действуют в глобальном и локальном чатах и не распространяются на ЛС. Администрация сервера может выдавать наказания в чате на своё усмотрение. Подстрекатель наказывается в том же порядке, что и игрок(и), которого(ых) он призвал к запрещённым действиям.</div>
     <div class="rules-note reveal" style="margin-top:12px;">Если вы добавили игрока в ваш регион/остров, и он вас загриферил — это ваши проблемы: будьте осторожнее и не добавляйте кого попало. Жалобы на работоспособность сервера и его персонала ничего не исправят — хотите помочь серверу, загляните на страницу покупки доната.</div>
     <div class="rules-note reveal" style="margin-top:12px;">Полная и актуальная редакция правил всегда доступна на сервере по команде <span class="mono">/rules</span> и в Discord.</div>
-  </div>
-</section>
-</div>
-
-<div class="tab-panel" id="panel-punishments">
-<section class="section" id="punishments">
-  <div class="container">
-    <div class="section-head reveal">
-      <div class="kicker pixel">⚖ LiteBans</div>
-      <h2>Наказания</h2>
-      <p>Список последних банов, мутов и предупреждений на сервере. Оспорить наказание можно в Discord через тикет.</p>
-    </div>
-
-    <div class="punish-panel reveal">
-      <div class="punish-toolbar">
-        <input type="text" id="punishSearch" class="punish-search mono" placeholder="Поиск по нику или причине..." oninput="filterPunishments()">
-        <span class="punish-count" id="punishCount"></span>
-      </div>
-      <table class="punish-table">
-        <thead>
-          <tr>
-            <th>Игрок</th>
-            <th>Тип</th>
-            <th>Причина</th>
-            <th>Модератор</th>
-            <th>Дата</th>
-          </tr>
-        </thead>
-        <tbody id="punishBody"></tbody>
-      </table>
-      <div class="punish-empty" id="punishEmpty" style="display:none;">Ничего не найдено</div>
-      <div class="punish-note">Данные подключаются к базе LiteBans сервера. Показаны демо-записи — для вывода реальных наказаний нужно подключить бэкенд, который читает litebans_mv.db и отдаёт JSON (браузер не может обращаться к .mv.db напрямую).</div>
-    </div>
   </div>
 </section>
 </div>
@@ -1498,50 +1412,6 @@
   }
   document.querySelectorAll('.voxel[data-size]').forEach(buildVoxel);
 
-  // ---------- PUNISHMENTS (LiteBans demo data) ----------
-  // NOTE: this is placeholder data. A static page can't read litebans_mv.db directly
-  // (it's a server-side H2 database) — hook this up to a small backend endpoint
-  // that queries LiteBans and returns JSON in this same shape.
-  const PUNISH_DEMO = [
-    { player:'Stray_Wolf',   type:'ban',  reason:'X-ray читы',                 staff:'Admin_Nova',  date:'21.07.2026', status:'active'  },
-    { player:'kotopes228',   type:'mute', reason:'Спам в чате',                 staff:'Mod_Lira',    date:'21.07.2026', status:'expired' },
-    { player:'BuilderMax',   type:'warn', reason:'Оскорбления в чате',          staff:'Mod_Lira',    date:'20.07.2026', status:'expired' },
-    { player:'ShadowFang',   type:'ban',  reason:'Дюп предметов',               staff:'Admin_Nova',  date:'19.07.2026', status:'active'  },
-    { player:'lil_creeper',  type:'kick', reason:'Абуз бага телепорта',         staff:'Mod_Ferro',   date:'18.07.2026', status:'expired' },
-    { player:'IceQueen_7',   type:'mute', reason:'Реклама стороннего сервера',  staff:'Admin_Nova',  date:'17.07.2026', status:'active'  },
-    { player:'GrimReaper00', type:'ban',  reason:'Гриферство острова',          staff:'Mod_Ferro',   date:'16.07.2026', status:'expired' }
-  ];
-  const PTYPE_LABEL = { ban:'Бан', mute:'Мут', kick:'Кик', warn:'Варн' };
-  const PSTATUS_LABEL = { active:'Активно', expired:'Снято' };
-
-  function renderPunishments(list){
-    const body = document.getElementById('punishBody');
-    const empty = document.getElementById('punishEmpty');
-    const count = document.getElementById('punishCount');
-    body.innerHTML = '';
-    count.textContent = list.length + ' из ' + PUNISH_DEMO.length;
-    empty.style.display = list.length ? 'none' : 'block';
-    list.forEach(p => {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td class="punish-player">${p.player}</td>
-        <td><span class="ptype ${p.type}">${PTYPE_LABEL[p.type]}</span></td>
-        <td class="punish-reason">${p.reason}<br><span class="pstatus ${p.status}">${PSTATUS_LABEL[p.status]}</span></td>
-        <td class="punish-staff">${p.staff}</td>
-        <td class="punish-date">${p.date}</td>
-      `;
-      body.appendChild(tr);
-    });
-  }
-  function filterPunishments(){
-    const q = document.getElementById('punishSearch').value.trim().toLowerCase();
-    const filtered = !q ? PUNISH_DEMO : PUNISH_DEMO.filter(p =>
-      p.player.toLowerCase().includes(q) || p.reason.toLowerCase().includes(q)
-    );
-    renderPunishments(filtered);
-  }
-  renderPunishments(PUNISH_DEMO);
-
   function showToast(msg){
     const t = document.getElementById('toast');
     t.textContent = msg;
@@ -1551,7 +1421,7 @@
   }
 
   function copyIP(){
-    const ip = 'play.elistar.pro';
+    const ip = 'elistar.pro';
     const done = () => {
       const label = document.getElementById('copyIpText');
       label.textContent = 'Скопировано!';
@@ -1692,5 +1562,4 @@
 
 </body>
 </html>
-
 
