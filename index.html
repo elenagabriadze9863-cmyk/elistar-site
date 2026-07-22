@@ -1292,6 +1292,7 @@
       </div>
     </div>
     <div class="copyright" id="copyright"></div>
+    <div class="copyright" id="rekvizity" style="margin-top:8px;">Продавец: самозанятый, ИНН 553404154208. Оплата через ЮKassa.</div>
   </div>
 </footer>
 
@@ -1447,15 +1448,18 @@
     btn.classList.add('clicked');
   }
 
+  // Адрес бэкенда с оплатой — поменяй, если назовёшь поддомен иначе
+  const API_BASE = 'https://api.elistar.pro';
+
   function buyTier(name, price, btn){
     if (btn) bounceButton(btn);
-    openBuyModal(name, price + ' ₽');
+    openBuyModal(name, price + ' ₽', { type: 'tier', tier: name.toLowerCase() });
   }
 
   function buyPearls(btn){
     if (btn) bounceButton(btn);
     const qty = parseInt(document.getElementById('pearlInput').value, 10) || 0;
-    openBuyModal('Жемчуга × ' + qty.toLocaleString('ru-RU'), qty.toLocaleString('ru-RU') + ' ₽');
+    openBuyModal('Жемчуга × ' + qty.toLocaleString('ru-RU'), qty.toLocaleString('ru-RU') + ' ₽', { type: 'pearls', qty });
   }
 
   // ---------- TABS ----------
@@ -1471,10 +1475,10 @@
   }
 
   // ---------- BUY MODAL ----------
-  let currentPurchase = { name:'', price:'' };
+  let currentPurchase = { name:'', price:'', payload:null };
 
-  function openBuyModal(name, price){
-    currentPurchase = { name, price };
+  function openBuyModal(name, price, payload){
+    currentPurchase = { name, price, payload };
     document.getElementById('modalItemName').textContent = name;
     document.getElementById('modalItemPrice').textContent = price;
     document.getElementById('buyForm').reset();
@@ -1506,25 +1510,40 @@
 
   const PAY_LABELS = { sberpay:'СберПей', sbp:'СБП', crypto:'Крипта', foreign:'Зарубежная карта' };
 
-  function submitBuyForm(e){
+  async function submitBuyForm(e){
     e.preventDefault();
     const nick = document.getElementById('buyNick').value.trim();
     const email = document.getElementById('buyEmail').value.trim();
-    const promo = document.getElementById('buyPromo').value.trim();
-    const methodInput = document.querySelector('input[name="payMethod"]:checked');
-    const method = methodInput ? methodInput.value : 'sberpay';
-    closeBuyModal();
-    showToast('Заявка на «' + currentPurchase.name + '» отправлена!');
-    setTimeout(() => {
-      alert(
-        'Оформление: ' + currentPurchase.name + ' — ' + currentPurchase.price +
-        '\nНик: ' + nick +
-        '\nПочта: ' + email +
-        (promo ? '\nПромокод: ' + promo : '') +
-        '\nСпособ оплаты: ' + PAY_LABELS[method] +
-        '\n\nВ демо-версии платёжный шлюз не подключён.'
-      );
-    }, 250);
+
+    if (!nick || !email) {
+      showToast('Заполни ник и почту');
+      return;
+    }
+
+    const submitBtn = e.target.querySelector('.modal-submit');
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Создаём платёж...'; }
+
+    try {
+      const res = await fetch(API_BASE + '/api/create-payment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...currentPurchase.payload, nick, email })
+      });
+      const data = await res.json();
+
+      if (!res.ok || !data.confirmation_url) {
+        showToast(data.error || 'Не удалось создать платёж');
+        if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Оплатить'; }
+        return;
+      }
+
+      // Редирект на страницу оплаты ЮKassa
+      window.location.href = data.confirmation_url;
+    } catch (err) {
+      console.error(err);
+      showToast('Ошибка соединения с сервером оплаты');
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Оплатить'; }
+    }
   }
 
   // Scroll-reveal animations
