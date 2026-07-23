@@ -1990,4 +1990,43 @@
       <div class="lb-row">
         <span class="lb-rank ${ranks[i] || ''}">${i+1}</span>
         <div class="lb-player">
-          <span class="lb-nick">${row.nick}<span class="lb-tier-badg
+          <span class="lb-nick">${row.nick}<span class="lb-tier-badge" style="color:${row.tierColor}; background:${row.tierBg};">${row.tier}</span></span>
+        </div>
+        <span class="lb-amount">${row.amount}</span>
+        <span class="lb-date">${row.date}</span>
+      </div>
+    `).join('');
+  })();
+
+  /* ============ ОТЗЫВЫ ============ */
+  const reviewsData = [
+    { nick: 'ShadowWolf_RU', tier: 'Amethyst', color: 'var(--amethyst-2)', bg: 'rgba(199,139,255,0.14)', stars: 5, text: 'Купил Amethyst — /fly и сохранение инвентаря того стоят. Админы отвечают быстро.' },
+    { nick: 'grumpy_frog', tier: 'Emerald', color: 'var(--emerald-2)', bg: 'rgba(75,255,171,0.12)', stars: 5, text: 'Эндер-сундук изменил всё — больше не таскаю сумки между базами.' },
+    { nick: 'kroshka_картошка', tier: 'Silver', color: 'var(--silver-2)', bg: 'rgba(233,237,242,0.12)', stars: 4, text: 'Хорошее соотношение цены и слотов на аукционе. Взял бы Ruby в следующий раз.' },
+    { nick: 'stonecutter_ivan', tier: 'Bronze', color: 'var(--bronze-2)', bg: 'rgba(217,149,82,0.12)', stars: 5, text: 'Для старта хватило с головой — /heal и /feed реально экономят время.' },
+    { nick: 'MilkTea228', tier: 'Platinum', color: 'var(--platinum-2)', bg: 'rgba(242,248,255,0.12)', stars: 5, text: 'Полёт на острове — это просто другой уровень стройки. Рекомендую.' },
+    { nick: 'BlockMiner99', tier: 'Ruby', color: 'var(--ruby-2)', bg: 'rgba(255,61,100,0.12)', stars: 4, text: 'Наковальня и pat-pat — мелочь, а приятно. Сервер живой, комьюнити дружелюбное.' },
+  ];
+  (function renderReviews(){
+    const track = document.getElementById('reviewsTrack');
+    const cardHTML = (r) => `
+      <div class="review-card">
+        <div class="review-top">
+          <div class="review-avatar" style="--av-bg:${r.bg};">🙂</div>
+          <div>
+            <div class="review-nick">${r.nick}</div>
+            <span class="review-tier" style="--rv-color:${r.color}; --rv-bg:${r.bg}; color:${r.color}; background:${r.bg};">${r.tier}</span>
+          </div>
+        </div>
+        <div class="review-stars">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</div>
+        <div class="review-text">${r.text}</div>
+      </div>
+    `;
+    // Дублируем набор для бесшовной прокрутки
+    track.innerHTML = reviewsData.map(cardHTML).join('') + reviewsData.map(cardHTML).join('');
+  })();
+
+  document.getElementById('copyright').textContent = `© ${new Date().getFullYear()} elistar.pro — все права защищены`;
+</script>
+</body>
+</html>
