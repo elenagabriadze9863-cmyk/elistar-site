@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>elistar.pro — Донат</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 6 L61.5 37 L96 39 L68.5 60 L78.5 93 L50 74 L21.5 93 L31.5 60 L4 39 L38.5 37 Z' fill='%23f0c04a' stroke='%238a5410' stroke-width='3'/%3E%3C/svg%3E">
+<meta property="og:title" content="elistar.pro — Донат">
+<meta property="og:description" content="Приватные команды, полёт, редкий луд и уважение сервера. Выбери тир привилегии или закинь жемчуга под свои цели.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#0a0b0d">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0b0d; --bg-panel:#131519; --bg-panel-2:#1a1d22; --line:rgba(255,255,255,0.07);
+    --text:#eae8e3; --muted:#8b8f98; --muted-2:#5f636c;
+    --bronze-1:#8a5a2e; --bronze-2:#d99552;
+    --silver-1:#8e97a3; --silver-2:#e9edf2;
+    --ruby-1:#7a0f2c; --ruby-2:#ff3d64;
+    --emerald-1:#0e6b45; --emerald-2:#4bffab;
+    --platinum-1:#7fa8c9; --platinum-2:#f2f8ff;
+    --amethyst-1:#5a1f9e; --amethyst-2:#c78bff;
+    --gold:#f0c04a;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{ background:var(--bg); color:var(--text); font-family:'Manrope', sans-serif; line-height:1.5; overflow-x:hidden; }
+  h1,h2,h3,.logo,.tier-name{ font-family:'Cinzel', serif; letter-spacing:0.02em; }
+  .mono{ font-family:'JetBrains Mono', monospace; }
+  .pixel{ font-family:'Press Start 2P','JetBrains Mono',monospace; }
+  a{ color:inherit; }
+  .container{ max-width:1180px; margin:0 auto; padding:0 24px; position:relative; z-index:1; }
+  .reveal{ opacity:0; transform:translateY(34px); transition:opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1); }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+
+  header{ position:sticky; top:0; z-index:50; backdrop-filter:blur(14px); background:rgba(10,11,13,0.82); border-bottom:1px solid var(--line); }
+  .header-inner{ display:flex; align-items:center; justify-content:space-between; padding:16px 0; gap:16px; flex-wrap:wrap; }
+  .brand{ display:flex; align-items:center; gap:14px; }
+  .brand-full{ color:#e8caa0; }
+  .brand-text .logo{ font-size:20px; font-weight:700; }
+  .brand-text .slogan{ font-size:12px; color:var(--muted); font-weight:500; }
+  .ip-box{ display:flex; align-items:center; gap:10px; background:var(--bg-panel); border:1px solid var(--line); border-radius:10px; padding:8px 8px 8px 16px; }
+  .ip-box .ip-label{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:0.08em; }
+  .ip-box .ip-value{ font-size:14px; font-weight:600; }
+  .copy-btn{ display:flex; align-items:center; gap:6px; background:var(--bg-panel-2); border:1px solid var(--line); color:var(--text); font-weight:600; font-size:12px; padding:8px 12px; border-radius:7px; cursor:pointer; }
+  .copy-btn svg{ width:14px; height:14px; }
+
+  .hero{ padding:70px 0 40px; text-align:center; }
+  .hero .eyebrow{ display:inline-block; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--amethyst-2); font-weight:700; margin-bottom:22px; padding:9px 16px; border:1px solid rgba(199,139,255,0.3); border-radius:6px; background:rgba(199,139,255,0.06); }
+  .hero h1{ font-size:clamp(30px,5vw,48px); font-weight:800; line-height:1.2; margin-bottom:16px; }
+  .hero p{ color:var(--muted); font-size:16px; max-width:560px; margin:0 auto; }
+
+  .tabbar-wrap{ padding:0 0 8px; }
+  .tabbar{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+  .tab-btn{ display:flex; align-items:center; gap:9px; font-weight:700; font-size:13.5px; padding:13px 24px; border-radius:100px; border:1px solid var(--line); background:var(--bg-panel); color:var(--muted); cursor:pointer; transition:all .25s ease; }
+  .tab-btn svg{ width:16px; height:16px; }
+  .tab-btn.active{ color:#0a0b0d; background:linear-gradient(120deg, var(--amethyst-2), var(--ruby-2)); border-color:transparent; }
+  .tab-panel{ display:none; }
+  .tab-panel.active{ display:block; }
+
+  .section{ padding:56px 0; }
+  .section-head{ text-align:center; margin-bottom:40px; }
+  .section-head .kicker{ font-size:10px; letter-spacing:0.06em; text-transform:uppercase; color:var(--muted); font-weight:700; margin-bottom:14px; }
+  .section-head h2{ font-size:clamp(24px,3.4vw,34px); font-weight:700; }
+  .section-head p{ color:var(--muted); margin-top:10px; max-width:560px; margin-left:auto; margin-right:auto; font-size:15px; }
+
+  /* ---------- ДЕКЛАРАЦИЯ ---------- */
+  .decree{
+    position:relative; margin:0 0 30px; padding:34px 38px; text-align:center; border-radius:20px;
+    background: linear-gradient(180deg, rgba(90,31,158,0.14), rgba(15,17,20,0.6)), linear-gradient(180deg, var(--bg-panel-2), var(--bg-panel));
+    border:1px solid rgba(199,139,255,0.25); overflow:hidden;
+  }
+  .decree::before, .decree::after{ content:"❧"; position:absolute; top:16px; font-size:22px; color:rgba(199,139,255,0.55); }
+  .decree::before{ left:22px; } .decree::after{ right:22px; transform:scaleX(-1); }
+  .decree-kicker{ font-size:10.5px; letter-spacing:0.14em; text-transform:uppercase; color:var(--amethyst-2); font-weight:800; margin-bottom:12px; }
+  .decree h3{ font-size:clamp(19px,2.6vw,26px); background:linear-gradient(120deg, var(--gold), #fff6da, var(--amethyst-2)); -webkit-background-clip:text; background-clip:text; color:transparent; margin-bottom:14px; }
+  .decree p{ color:#d8d6e0; font-size:14.5px; line-height:1.7; max-width:680px; margin:0 auto; }
+  .decree p + p{ margin-top:10px; }
+  .decree-seal{ display:inline-flex; align-items:center; gap:8px; margin-top:20px; padding:8px 16px; border-radius:100px; background:rgba(240,192,74,0.08); border:1px solid rgba(240,192,74,0.3); font-size:11.5px; font-weight:700; color:var(--gold); }
+
+  .rules-prime{ display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:26px; }
+  .prime-item{ display:flex; align-items:flex-start; gap:14px; background:linear-gradient(135deg, rgba(240,192,74,0.09), rgba(240,192,74,0.02)); border:1px solid rgba(240,192,74,0.28); border-radius:14px; padding:18px 20px; }
+  .rule-num{ display:inline-flex; align-items:center; justify-content:center; width:24px; height:24px; border-radius:7px; font-size:12px; font-weight:800; background:rgba(255,61,100,0.12); color:var(--ruby-2); flex-shrink:0; }
+  .prime-item .rule-num{ background:rgba(240,192,74,0.16); color:var(--gold); }
+  .prime-item p{ font-size:13.5px; color:#eae4d2; line-height:1.55; }
+  .prime-item .prime-wink{ display:block; margin-top:5px; font-size:12px; color:var(--muted); font-style:italic; }
+  @media (max-width:700px){ .rules-prime{ grid-template-columns:1fr; } }
+
+  .rules-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:18px; }
+  .rule-card{ background:linear-gradient(180deg, var(--bg-panel-2), var(--bg-panel)); border:1px solid var(--line); border-left:3px solid var(--ruby-2); border-radius:14px; padding:22px 22px 20px; }
+  .rule-card.tone-emerald{ border-left-color:var(--emerald-2); }
+  .rule-card.tone-platinum{ border-left-color:var(--platinum-2); }
+  .rule-card.tone-amethyst{ border-left-color:var(--amethyst-2); }
+  .rule-card h3{ font-size:16px; margin-bottom:12px; display:flex; align-items:center; gap:9px; }
+  .tone-emerald .rule-num{ background:rgba(75,255,171,0.12); color:var(--emerald-2); }
+  .tone-platinum .rule-num{ background:rgba(242,248,255,0.12); color:var(--platinum-2); }
+  .tone-amethyst .rule-num{ background:rgba(199,139,255,0.14); color:var(--amethyst-2); }
+  .rule-card ul{ list-style:none; display:flex; flex-direction:column; gap:8px; }
+  .rule-card li{ font-size:13.5px; color:#cfd2d8; line-height:1.5; padding-left:26px; position:relative; }
+  .rule-card > ul > li::before{ content: attr(data-num) "."; position:absolute; left:0; top:0; color:var(--muted-2); font-weight:800; font-family:'JetBrains Mono', monospace; font-size:12.5px; }
+  .rule-card .sub-list{ list-style:none; display:flex; flex-direction:column; gap:6px; margin:8px 0 0 4px; }
+  .rule-card .sub-list li{ font-size:12.5px; color:var(--muted); padding-left:0; }
+  .rule-card .sub-list li::before{ content:none; }
+  .rule-card li b{ color:var(--text); }
+  .tag-mark{ display:inline-block; font-size:10.5px; font-weight:800; padding:1px 7px; border-radius:100px; margin-left:6px; background:rgba(255,61,100,0.16); color:#ff6d8c; white-space:nowrap; }
+
+  .rules-footnotes{ margin-top:22px; display:flex; flex-direction:column; gap:10px; }
+  .rules-footnotes .fn{ font-size:13px; color:var(--muted); line-height:1.6; background:rgba(255,255,255,0.02); border:1px solid var(--line); border-radius:12px; padding:14px 18px; }
+  .rules-footnotes .fn b{ color:var(--text); }
+
+  footer{ border-top:1px solid var(--line); padding:40px 0 28px; }
+  .footer-inner{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; }
+  .footer-brand{ display:flex; align-items:center; gap:10px; }
+  .socials{ display:flex; gap:10px; }
+  .social-btn{ width:38px; height:38px; border-radius:10px; background:var(--bg-panel); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; text-decoration:none; }
+  .social-btn svg{ width:18px; height:18px; color:var(--muted); }
+  .copyright{ color:var(--muted-2); font-size:12.5px; text-align:center; margin-top:26px; }
+
+  .toast{ position:fixed; bottom:26px; left:50%; transform:translateX(-50%) translateY(20px) scale(0.9); background:#181c22; border:1px solid var(--line); color:var(--text); padding:13px 20px; border-radius:8px; font-size:14px; font-weight:600; opacity:0; pointer-events:none; transition:all .45s cubic-bezier(.34,1.56,.64,1); z-index:200; }
+  .toast.show{ opacity:1; transform:translateX(-50%) translateY(0) scale(1); }
+
+  @media (max-width:520px){ .ip-box{ display:none; } .tab-btn{ padding:11px 16px; font-size:12.5px; flex:1; justify-content:center; } }
+</style>
+</head>
+<body>
+
+<div class="stats-ticker" style="text-align:center; padding:8px 20px; font-size:12.5px; color:var(--muted); background:rgba(255,255,255,0.02); border-bottom:1px solid var(--line);">
+  Устав обновлён · elistar.pro
+</div>
+
+<header>
+  <div class="container header-inner">
+    <div class="brand">
+      <div class="brand-text">
+        <div class="logo"><span class="brand-full">elistar.pro</span></div>
+        <div class="slogan pixel" style="font-size:8px; line-height:1.8; letter-spacing:0;">ЗАХОДИ · КРАФТИ · ПОБЕЖДАЙ</div>
+      </div>
+    </div>
+    <div class="ip-box">
+      <div>
+        <div class="ip-label">IP сервера</div>
+        <div class="ip-value mono">elistar.pro</div>
+      </div>
+      <button class="copy-btn" id="copyIpBtn" onclick="copyIP()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+        <span id="copyIpText">Копировать</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container">
+    <span class="eyebrow pixel" style="font-size:9px;">📜 Устав elistar.pro</span>
+    <h1>Правила игрового сервера</h1>
+    <p>Соблюдение правил обязательно для всех — от новичка до старейшины гильдии. Незнание устава не освобождает от наказания.</p>
+  </div>
+</section>
+
+<section class="section" id="rules">
+  <div class="container">
+
+    <!-- ДЕКЛАРАЦИЯ -->
+    <div class="decree reveal in">
+      <div class="decree-kicker">Декларация elistar.pro</div>
+      <h3>«Свобода игрока заканчивается там, где начинается чужой инвентарь»</h3>
+      <p>Мы строим мир, в который хочется возвращаться: с честным крафтом, живой экономикой и сообществом, где новичка не обижают, а ветерана — уважают. Эти правила — не про запреты ради запретов, а про то, чтобы каждый мог спокойно играть на своей территории.</p>
+      <p>Читая устав ниже, помни главное правило нулевого уровня: <b>включай голову раньше, чем открываешь чат.</b> Дальше — детали.</p>
+      <div class="decree-seal">🖋️ Утверждено администрацией elistar.pro</div>
+    </div>
+
+    <div class="rules-prime reveal in">
+      <div class="prime-item">
+        <span class="rule-num">0.1</span>
+        <p>Не быть тупым.<span class="prime-wink">Если вы получили наказание именно по этому пункту — что ж, вы дурачок. Мы предупреждали.</span></p>
+      </div>
+      <div class="prime-item">
+        <span class="rule-num">0.2</span>
+        <p>Администрация вправе выдать наказание по своему усмотрению, даже если конкретный случай не описан ниже буквально — если поведение игрока явно вредит проекту или другим игрокам.</p>
+      </div>
+    </div>
+
+    <div class="rules-grid">
+      <div class="rule-card reveal in">
+        <h3><span class="rule-num">01</span>Чат</h3>
+        <ul>
+          <li data-num="1">Не флудить — <b>флуд</b> — это повторяющиеся по смыслу или написанию слова и символы, растянутые более чем на 3 строки
+            <ul class="sub-list"><li>1.1 — Капс (больше 8 заглавных букв подряд) тоже считается флудом и наказывается так же</li></ul>
+          </li>
+          <li data-num="2">Не спамить — реклама, объявления и ссылки, не связанные с темой разговора или официальными ресурсами сервера, под запретом</li>
+          <li data-num="3">Не распространять вредоносные ссылки и ПО</li>
+          <li data-num="4">Не злоупотреблять токсичностью и оскорблениями — переход на личности и особенно на близких людей недопустим</li>
+          <li data-num="5">Не писать абракадаброй на непонятных большинству языках или множеством юникод-символов <span class="tag-mark">κ@λ1βεξ</span></li>
+          <li data-num="6">Не сливать личные данные других игроков без их прямого согласия</li>
+          <li data-num="7">Не подстрекать и не призывать других к запрещённым на сервере или в реальном мире действиям</li>
+          <li data-num="8">Политика и межнациональные конфликты в чате исключены</li>
+          <li data-num="9">Участники «балаганов» (массовой перепалки) мутятся по решению администрации — без разбора, кто начал</li>
+        </ul>
+      </div>
+
+      <div class="rule-card tone-emerald reveal in">
+        <h3><span class="rule-num">02</span>Игровой процесс</h3>
+        <ul>
+          <li data-num="1">Читы, автокликеры, X-Ray и любые моды/текстур-паки, дающие нечестное преимущество над другими <span class="tag-mark">бан</span></li>
+          <li data-num="2">Использование багов запрещено — нашёл баг, сразу пиши администрации <span class="tag-mark">бан за багоюз</span></li>
+          <li data-num="3">Ловушки против других игроков запрещены в любом виде</li>
+          <li data-num="4">Мешать чужому игровому процессу запрещено, тем более — если это приводит к негативным последствиям <span class="tag-mark">бан</span></li>
+          <li data-num="5">Игра с нескольких аккаунтов одновременно (твинки) под запретом</li>
+          <li data-num="6">Запрещено любым способом вредить репутации сервера — писать гадости о проекте, строить лаг-машины</li>
+          <li data-num="7">Покупка и продажа игровых ценностей за реальные деньги запрещена — исключение только официальный донат</li>
+        </ul>
+      </div>
+
+      <div class="rule-card tone-platinum reveal in">
+        <h3><span class="rule-num">03</span>Территория ответственности</h3>
+        <ul>
+          <li data-num="1">Добавил игрока на свой остров или в регион — сам отвечаешь за последствия. Если он вас загрифил, это неосторожность, а не повод для жалобы</li>
+          <li data-num="2">Выбирайте попутчиков по крафту и стройке внимательно — доверие на сервере выдаёт не администрация, а вы сами</li>
+          <li data-num="3">Жалобы на работоспособность сервера и работу персонала проблему не решают — если хотите ускорить развитие проекта, лучший способ помочь — заглянуть на страницу доната</li>
+        </ul>
+      </div>
+
+      <div class="rule-card tone-amethyst reveal in">
+        <h3><span class="rule-num">04</span>Область действия</h3>
+        <ul>
+          <li data-num="1">Все правила чата действуют как в глобальном, так и в локальном чате</li>
+          <li data-num="2">Правила чата <b>не распространяются</b> на личные сообщения (ЛС) между игроками</li>
+          <li data-num="3">Администрация сервера может выдавать наказания в чате на своё усмотрение</li>
+          <li data-num="4">Подстрекатель наказывается в том же порядке, что и игроки, которых он призвал к запрещённым действиям</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="rules-footnotes reveal in">
+      <div class="fn">💬 <b>Совет ветерана:</b> лучшая стратегия на elistar.pro — играть так, будто администратор стоит у вас за спиной. Спойлер: иногда так и есть.</div>
+      <div class="fn">🐸 <b>Мир и покой:</b> устав меняется редко, но метко — если правило показалось спорным, обсудите его в Discord, а не в угрозах модераторам в личных сообщениях.</div>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="logo"><span class="brand-full">elistar.pro</span></div>
+      </div>
+      <div class="socials">
+        <a class="social-btn" href="https://discord.gg/ynyEjT2zq" target="_blank" rel="noopener" title="Discord">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.3 4.4A18 18 0 0 0 15.9 3l-.3.6a13 13 0 0 1 3.9 1.5A16 16 0 0 0 12 4a16 16 0 0 0-7.5 1.1A13 13 0 0 1 8.4 3.6L8.1 3a18 18 0 0 0-4.4 1.4C1.6 8 1 11.5 1.2 15a18 18 0 0 0 5.1 2.5l.8-1.3a11 11 0 0 1-1.7-.8l.4-.3a13 13 0 0 0 11.2 0l.4.3c-.5.3-1.1.6-1.7.8l.8 1.3A18 18 0 0 0 22.8 15c.3-4-.7-7.5-2.5-10.6zM8.7 13.2c-.7 0-1.3-.7-1.3-1.5s.6-1.5 1.3-1.5c.8 0 1.4.7 1.3 1.5 0 .8-.5 1.5-1.3 1.5zm6.6 0c-.7 0-1.3-.7-1.3-1.5s.6-1.5 1.3-1.5c.8 0 1.4.7 1.3 1.5 0 .8-.5 1.5-1.3 1.5z"/></svg>
+        </a>
+        <a class="social-btn" href="https://t.me/elistar_pro" target="_blank" rel="noopener" title="Telegram">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 4.3 2.7 11.8c-1.1.4-1.1 1 0 1.4l4.9 1.5 1.9 5.9c.2.6.4.8.8.8.4 0 .6-.2.9-.5l2.4-2.3 4.9 3.6c.7.4 1.2.2 1.4-.7l3.4-16c.3-1.1-.3-1.6-1.4-1.2z"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="copyright" id="copyright"></div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  function showToast(msg){
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(window.__toastTimer);
+    window.__toastTimer = setTimeout(()=> t.classList.remove('show'), 2600);
+  }
+  function copyIP(){
+    const ip = 'elistar.pro';
+    const done = () => {
+      document.getElementById('copyIpText').textContent = 'Скопировано!';
+      showToast('IP скопирован: ' + ip);
+      setTimeout(()=> document.getElementById('copyIpText').textContent = 'Копировать', 2000);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(ip).then(done).catch(()=>{});
+    }
+  }
+  document.getElementById('copyright').textContent = `© ${new Date().getFullYear()} elistar.pro — все права защищены`;
+</script>
+</body>
+</html>
